@@ -10,10 +10,26 @@ enum OutputPins{
 #define QUANTITY_PINS_OUTPUT 4
 uint8_t outputPins[QUANTITY_PINS_OUTPUT] ={A0,A1,A2,13}; // specify the pins in order
 
+#define LENGTH_MAX_PINAME 15 // required for debugging
+const char outPinNames[QUANTITY_PINS_OUTPUT][LENGTH_MAX_PINAME+1] PROGMEM = {
+    "redLed",
+    "greenLed", 
+    "yellowLed",
+    "builtinLed"
+};
+
 LC_DigitalOutput output(outputPins,QUANTITY_PINS_OUTPUT); // pass output pins array and size to constructor
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(115200);
+
+  output.AttachDebugPort(&Serial);
+  output.AttachNames((const char*)outPinNames,LENGTH_MAX_PINAME+1); 
+  // output.SetDebugLevel(DebugLevel::important); // print important debugging messages only
+  // output.SetDebugLevel(DebugLevel::useful); // print important + extra debugging messages
+  output.SetDebugLevel(DebugLevel::devt1); // print all debugging messages 
+
   output.Init(); // initializes all output pins to OUTPUT mode
   output.Drive(greenLed, true); // drive pin to active state
 

@@ -10,10 +10,14 @@ enum OutputPins{
 #define QUANTITY_PINS_OUTPUT 4
 uint8_t outputPins[QUANTITY_PINS_OUTPUT] ={A0,A1,A2,13}; // specify the pins in order
 
+bool activeStates[QUANTITY_PINS_OUTPUT] = {LOW,HIGH,LOW,HIGH}; // specify the active states in order
+
 LC_DigitalOutput output(outputPins,QUANTITY_PINS_OUTPUT); // pass output pins array and size to constructor
 
 void setup() {
   // put your setup code here, to run once:
+//   output.SetActiveState(LOW); // active states for all pins set to LOW (default is HIGH)
+  output.AttachActiveStates(activeStates); // active states for pins depend on the corresponding element in the array
   output.Init(); // initializes all output pins to OUTPUT mode
   output.Drive(greenLed, true); // drive pin to active state
 
